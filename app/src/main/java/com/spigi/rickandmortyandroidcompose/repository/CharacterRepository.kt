@@ -79,14 +79,22 @@ class CharacterRepository(
     }
 
     fun save(character: Character) {
-        characterDao.save(CharacterEntity(character.id))
+        characterDao.save(character.toEntity())
     }
 
     fun delete(character: Character) {
-        characterDao.delete(CharacterEntity(character.id))
+        characterDao.delete(character.toEntity())
     }
 
     fun existsById(character: Character): Boolean {
         return characterDao.getById(character.id) != null
+    }
+
+    fun getAll(callback: (Result<List<Character>>)->Unit) {
+        return try {
+            callback(Result.Success(characterDao.getAll().map { it.toCharacter() }))
+        } catch (e: Exception) {
+            callback(Result.Error(e.localizedMessage as String))
+        }
     }
 }

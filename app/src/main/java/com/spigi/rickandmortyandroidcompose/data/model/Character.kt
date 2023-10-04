@@ -11,7 +11,17 @@ data class Character (
     val species: String,
     val image: String,
     var isFavorite: Boolean = false
-)
+) {
+    fun toEntity(): CharacterEntity {
+        return CharacterEntity(
+            id = id,
+            name = name,
+            status = status,
+            species = species,
+            image = image
+        )
+    }
+}
 
 data class Location(
     val name: String
